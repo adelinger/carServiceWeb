@@ -7,8 +7,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res) {
-    var inputData = request.body.randomsearch
-    response.render('results.ejs',{ data:inputData})
+    var inputData = req.body.pokusaj
+    res.render('results.ejs',{ data:inputData})
 })
 
 module.exports = router;
