@@ -1,14 +1,50 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Moj servis></title>
+    <title>Moj servis prijava</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyD-A5tmlrzK4ZBBYlZgAjMblDYd0IeJGlc",
+            authDomain: "carserviceapp-5132f.firebaseapp.com",
+            databaseURL: "https://carserviceapp-5132f.firebaseio.com",
+            projectId: "carserviceapp-5132f",
+            storageBucket: "carserviceapp-5132f.appspot.com",
+            messagingSenderId: "909560725502"
+        };
+        firebase.initializeApp(config);
+    </script>
   </head>
-  <body>
-  <form method="POST">
-    <h1>Pretraga</h1>
-    <p> Pretraga <input name="pokusaj" /> </p>
-    <button type="Submit">Submit</button>
-  </form>
-  </body>
+  <div class="login-page">
+    <div class="form">
+      <form id="form1" method="post" class="login-form">
+        <input name="username" type="text" placeholder="Korisničko ime"/>
+        <input name="password" type="password" placeholder="Lozinka"/>
+        <button onclick={signIn()}>login</button>
+        <p id="passwordMessage" class="message">Neispravno korisničko ime ili lozinka </p>
+        <script>
+            function signIn() {
+                var form = document.getElementById("form1");
+                var email = form[0].value;
+                var password = form[1].value;
+                var falsePasswordMessage = document.getElementById("passwordMessage");
+
+                var authProvider = new firebase.auth.EmailAuthProvider
+                firebase.auth().signInWithEmailAndPassword(email, password)
+                    .then(function (data) {
+                        console.log(data)
+                       var idToken = data.user.uid;
+                        localStorage.setItem('id', idToken);
+
+                    }).catch(function (error) {
+                    console.log(error)
+                    falsePasswordMessage.style.display='block';
+                })
+            }
+        </script>
+      </form>
+    </div>
+  </div>
 </html>

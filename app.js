@@ -5,6 +5,19 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 
+var admin = require('firebase-admin');
+var serviceAccount = require('./carserviceapp-5132f-firebase-adminsdk-43li4-5b205f52ca.json')
+
+var firebaseAdmin = admin.initializeApp({
+    credential:admin.credential.cert(serviceAccount),
+    databaseURL:'https://carserviceapp-5132f.firebaseio.com'
+});
+
+//create authentication middleware
+function isAuthenticated (req, res, next) {
+
+}
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 

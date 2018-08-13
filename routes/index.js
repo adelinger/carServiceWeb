@@ -6,9 +6,19 @@ router.get('/', function(req, res, next) {
   res.render('index')
 });
 
-router.post('/', function(req, res) {
-    var inputData = req.body.pokusaj
-    res.render('results.ejs',{ data:inputData})
+/*
+router.get('/homePage',isAuthenticated(),function (req, res) {
+    res.render('homePage.ejs')
 })
+*/
+
+router.post('/', function(req, res) {
+
+});
+
+function isAuthenticated (req, res, next) {
+
+}
 
 module.exports = router;
+
