@@ -15,6 +15,16 @@
             messagingSenderId: "909560725502"
         };
         firebase.initializeApp(config);
+
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+
+                window.location.href = 'main.ejs';
+            }
+            else {
+
+            }
+        })
     </script>
   </head>
   <div class="login-page">
@@ -37,10 +47,12 @@
                         console.log(data)
                        var idToken = data.user.uid;
                         localStorage.setItem('id', idToken);
+                        window.location.href= "main.ejs";
 
                     }).catch(function (error) {
                     console.log(error)
                     falsePasswordMessage.style.display='block';
+
                 })
             }
         </script>

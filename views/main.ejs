@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+
+<script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
+<script>
+    var config = {
+        apiKey: "AIzaSyD-A5tmlrzK4ZBBYlZgAjMblDYd0IeJGlc",
+        authDomain: "carserviceapp-5132f.firebaseapp.com",
+        databaseURL: "https://carserviceapp-5132f.firebaseio.com",
+        projectId: "carserviceapp-5132f",
+        storageBucket: "carserviceapp-5132f.appspot.com",
+        messagingSenderId: "909560725502"
+    };
+    firebase.initializeApp(config);
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+        }
+        else {
+            window.location.href = '/';
+        }
+    })
+
+    function logOut ()
+    {
+        firebase.auth().signOut().then(function () {
+
+            window.location.href = '/';
+        })
+
+    }
+</script>
+<div class="main-page">
+    <button onClick={logOut()} > Odjavi se </button>
+
+</div>
+
+
+
+</html>

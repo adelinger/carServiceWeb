@@ -5,6 +5,9 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   res.render('index')
 });
+router.get('/main.ejs', function(req, res, next) {
+    res.render('main.ejs')
+})
 
 /*
 router.get('/homePage',isAuthenticated(),function (req, res) {
