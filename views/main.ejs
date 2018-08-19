@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
-
-
+<link rel='stylesheet' href='/stylesheets/mainPage.css' />
 <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
 <script>
     var config = {
@@ -12,29 +11,39 @@
         storageBucket: "carserviceapp-5132f.appspot.com",
         messagingSenderId: "909560725502"
     };
-    firebase.initializeApp(config);
-    firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {
-        }
-        else {
-            window.location.href = '/';
-        }
-    })
+    var database = firebase.database()
+    var dbRef = database.ref('/')
 
+
+    firebase.initializeApp(config);
+
+    function checkIfLoggedIn(){
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                document.body.style.display = 'block'
+            }
+            else {
+                window.location.href = '/';
+            }
+        })
+    }
     function logOut ()
     {
         firebase.auth().signOut().then(function () {
-
             window.location.href = '/';
         })
-
     }
+    window.onload = function () {
+        checkIfLoggedIn();
+    }
+
 </script>
+<input name = "test" type="text" name="testName" >
+<button type="button" onclick={}> testButton</button>
 <div class="main-page">
+    <form id="formMain" method="post" class="main-form">
     <button onClick={logOut()} > Odjavi se </button>
 
+</form>
 </div>
-
-
-
 </html>

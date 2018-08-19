@@ -14,17 +14,25 @@
             storageBucket: "carserviceapp-5132f.appspot.com",
             messagingSenderId: "909560725502"
         };
+
         firebase.initializeApp(config);
+        function checkIfLoggedIn ()  {
+            firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    window.location.href = 'main.ejs';
+                    var hour = 3600000
+                    req.session.cookie.expires = new Date(Date.now() + hour)
+                    req.session.cookie.maxAge = hour
+                }
+                else {
+                    document.body.style.display = 'block'
+                }
+            })
+        }
 
-        firebase.auth().onAuthStateChanged(function (user) {
-            if (user) {
-
-                window.location.href = 'main.ejs';
-            }
-            else {
-
-            }
-        })
+       window.onload = function () {
+           checkIfLoggedIn();
+       }
     </script>
   </head>
   <div class="login-page">
