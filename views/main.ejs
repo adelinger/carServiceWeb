@@ -3,6 +3,9 @@
 <link rel='stylesheet' href='/stylesheets/mainPage.css' />
 <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
 <script>
+    var currentUserId = "";
+    var listOfOrders = [""];
+
     var config = {
         apiKey: "AIzaSyD-A5tmlrzK4ZBBYlZgAjMblDYd0IeJGlc",
         authDomain: "carserviceapp-5132f.firebaseapp.com",
@@ -11,16 +14,20 @@
         storageBucket: "carserviceapp-5132f.appspot.com",
         messagingSenderId: "909560725502"
     };
-    var database = firebase.database()
-    var dbRef = database.ref('/')
 
+    window.onload = function () {
+        checkIfLoggedIn();
+        createTable();
+    }
 
     firebase.initializeApp(config);
+
 
     function checkIfLoggedIn(){
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
                 document.body.style.display = 'block'
+                currentUserId = user.uid;
             }
             else {
                 window.location.href = '/';
@@ -30,20 +37,65 @@
     function logOut ()
     {
         firebase.auth().signOut().then(function () {
-            window.location.href = '/';
+            window.location.href = 'car/';
         })
     }
-    window.onload = function () {
-        checkIfLoggedIn();
+
+
+    function getData() {
+        var database = firebase.database();
+
+        var starCountRef = firebase.database().ref('order/' + currentUserId + '/');
+        starCountRef.on('value', function(snapshot) {
+            listOfOrders = snapshot.val();
+            snapshot.forEach(function (childSnapshot) {
+                var childData = childSnapshot.val();
+                var name = childData.name
+
+            });
+        })
+    }
+    function createTable () {
+        var fragment = document.createDocumentFragment();
+        var table = document.createElement("table");
+        var headerList = ["Korisnik", "ID korisnika", "ID zahtjeva", "vrijeme", "status"];
+        for (var i=0; i<headerList.length; i++){
+            var th = document.createElement("th");
+            th.textContent = headerList[i];
+            table.appendChild(th);
+        }
+        fragment.appendChild(table);
+
+        var database = firebase.database();
+        var Ref = firebase.database().ref('order/');
+
+        Ref.on('value', function(snapshot) {
+            listOfOrders = snapshot.val();
+            snapshot.forEach(function (childSnapshot) {
+                var tr = document.createElement("tr");
+                var trValues = [childSnapshot.val().];
+                table.appendChild(tr);
+
+                for (var i = 0; i < trValues.length; i++) {
+                    var td = document.createElement("td");
+                    td.textContent = trValues[i];
+                    tr.appendChild(td);
+                }
+
+                document.body.appendChild(fragment);
+            });
+
+        })
     }
 
 </script>
-<input name = "test" type="text" name="testName" >
-<button type="button" onclick={}> testButton</button>
+
+<body>
 <div class="main-page">
     <form id="formMain" method="post" class="main-form">
-    <button onClick={logOut()} > Odjavi se </button>
-
-</form>
+        <button onClick={logOut()} > Odjavi se </button>
+    </form>
 </div>
+</body>
+</form>
 </html>
