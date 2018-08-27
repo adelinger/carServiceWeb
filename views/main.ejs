@@ -4,7 +4,11 @@
 <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
 <script>
     var currentUserId = "";
-    var listOfOrders = [""];
+    var listOfOrders = [];
+    var userName = "";
+    var userEmail;
+    var orderStatus = "";
+    var timeInfo = "";
 
     var config = {
         apiKey: "AIzaSyD-A5tmlrzK4ZBBYlZgAjMblDYd0IeJGlc",
@@ -15,9 +19,13 @@
         messagingSenderId: "909560725502"
     };
 
+    var fragment = document.createDocumentFragment();
+    var table = document.createElement("table");
+
+
     window.onload = function () {
         checkIfLoggedIn();
-        createTable();
+        createTable('showAll', table, fragment);
     }
 
     firebase.initializeApp(config);
@@ -37,55 +45,130 @@
     function logOut ()
     {
         firebase.auth().signOut().then(function () {
-            window.location.href = 'car/';
+            window.location.href = '/';
         })
     }
 
-
-    function getData() {
-        var database = firebase.database();
-
-        var starCountRef = firebase.database().ref('order/' + currentUserId + '/');
-        starCountRef.on('value', function(snapshot) {
-            listOfOrders = snapshot.val();
-            snapshot.forEach(function (childSnapshot) {
-                var childData = childSnapshot.val();
-                var name = childData.name
-
-            });
-        })
-    }
-    function createTable () {
-        var fragment = document.createDocumentFragment();
-        var table = document.createElement("table");
-        var headerList = ["Korisnik", "ID korisnika", "ID zahtjeva", "vrijeme", "status"];
-        for (var i=0; i<headerList.length; i++){
-            var th = document.createElement("th");
-            th.textContent = headerList[i];
-            table.appendChild(th);
-        }
-        fragment.appendChild(table);
+    function createTable (filterData, table, fragment) {
 
         var database = firebase.database();
         var Ref = firebase.database().ref('order/');
 
-        Ref.on('value', function(snapshot) {
+
+        Ref.on('value', function(snapshot) {                       //get userID from orders
             listOfOrders = snapshot.val();
+            table.innerHTML='';
+
+            var headerList = ["IDKorisnika", "ID zahtjeva", "Ime korisnika", "Email", "Status", "Vrijeme"];
+            for (var i=0; i<headerList.length; i++){
+                var th = document.createElement("th");
+                th.textContent = headerList[i];
+                table.appendChild(th);
+            }
+            fragment.appendChild(table);
+
             snapshot.forEach(function (childSnapshot) {
-                var tr = document.createElement("tr");
-                var trValues = [childSnapshot.val().];
-                table.appendChild(tr);
 
-                for (var i = 0; i < trValues.length; i++) {
-                    var td = document.createElement("td");
-                    td.textContent = trValues[i];
-                    tr.appendChild(td);
-                }
+                var RefTwo = firebase.database().ref('order/' +childSnapshot.key+ '/');
 
-                document.body.appendChild(fragment);
+                RefTwo.on('value', function(snapshotTwo) {       //get number of order from orders
+                    listOfOrders = snapshot.val();
+                    snapshotTwo.forEach(function (childSnapshotTwo) {
+
+                      var  RefNew = firebase.database().ref('order/' +childSnapshot.key + '/' +childSnapshotTwo.key +'/');
+                      RefNew.on('value', function (snap) {
+                          snap.forEach(function (snapChild) {
+                             orderStatus = snapChild.val().status; //get status info from orders
+                              timeInfo = snapChild.val().datumKreiranja;
+
+                                var RefThree = firebase.database().ref('users/' + childSnapshot.key + '/');  //get user info from users
+                                RefThree.on('value', function (snapshotThree) {
+                                    snapshotThree.forEach(function (childSnapshotThree) {
+                                        userName = childSnapshotThree.val().name + " " + childSnapshotThree.val().lastName;
+                                        userEmail = childSnapshotThree.val().email
+
+
+                                        var tr = document.createElement("tr");
+                                        var dot = document.createElement("dot");
+                                        dot.style.height='25px';
+                                        dot.style.width='25px';
+                                        dot.style.borderRadius='50px';
+                                        dot.style.display = 'inline-block';
+                                        dot.style.position= 'relative';
+                                        dot.style.left='5px';
+                                        dot.style.top='5px';
+
+                                        if(snapChild.val().status == "Dogovoreno") dot.style.backgroundColor= '#01DF01';
+                                        if(snapChild.val().status == "Kreirano") dot.style.backgroundColor= '#F7FE2E';
+                                        if(snapChild.val().status == "Završeno") dot.style.backgroundColor= '#A4A4A4';
+                                        if(snapChild.val().status == "Prijedlog korisnika") dot.style.backgroundColor= '#FF8000';
+                                        if(snapChild.val().status == "Prijedlog servisa") dot.style.backgroundColor= '#FF8000';
+
+                                        var trValues = [childSnapshot.key, childSnapshotTwo.key.substr(1, 1), userName, userEmail, snapChild.val().status, snapChild.val().datumKreiranja];
+
+                                        for (var i = 0; i < trValues.length; i++) {
+                                            var td = document.createElement("td");
+
+                                            if(filterData == 'showAll'){
+                                                td.textContent = trValues[i];
+                                                tr.appendChild(td)
+                                                tr.appendChild(dot)
+                                                table.appendChild(tr);
+                                            }
+                                            if(filterData == 'showNewRequirements')
+                                            {
+                                                if(trValues[4] != 'Kreirano') return;
+                                                td.textContent = trValues[i];
+                                                tr.appendChild(td)
+                                                tr.appendChild(dot)
+                                                table.appendChild(tr);
+                                            }
+                                            if(filterData == 'showDeal')
+                                            {
+                                                if(trValues[4] != 'Dogovoreno') return;
+                                                td.textContent = trValues[i];
+                                                tr.appendChild(td)
+                                                tr.appendChild(dot)
+                                                table.appendChild(tr);
+                                            }
+                                            if(filterData == 'showProcessing')
+                                            {
+                                                if(trValues[4] != 'Prijedlog servisa' && trValues[4] != 'Prijedlog korisnika') return;
+                                                td.textContent = trValues[i];
+                                                tr.appendChild(td)
+                                                tr.appendChild(dot)
+                                                table.appendChild(tr);
+                                            }
+                                            if(filterData == 'showUserSuggestion')
+                                            {
+                                                if(trValues[4] != 'Prijedlog korisnika' && trValues[4] != 'Kreirano' ) return;
+                                                td.textContent = trValues[i];
+                                                tr.appendChild(td)
+                                                tr.appendChild(dot)
+                                                table.appendChild(tr);
+                                            }
+                                            if(filterData == 'showDone')
+                                            {
+                                                if(trValues[4] != 'Završeno' ) return;
+                                                td.textContent = trValues[i];
+                                                tr.appendChild(td)
+                                                tr.appendChild(dot)
+                                                table.appendChild(tr);
+                                            }
+                                        }
+                                    }) })
+                            });
+                        });
+
+                    });
+                    document.body.appendChild(fragment);
             });
-
+                })
         })
+        }
+    function refreshTable(filterData) {
+        table.innerHTML=''
+        createTable(filterData, table, fragment)
     }
 
 </script>
@@ -96,6 +179,15 @@
         <button onClick={logOut()} > Odjavi se </button>
     </form>
 </div>
+
+<form id="checkButtonsForm" method="get" class="checkForm">
+    <label> <input onclick={refreshTable('showAll')} type="radio" name="radioButton" value="value" checked="true"> Svi zahtjevi </label>
+    <label id="testID"> <input onclick={refreshTable('showNewRequirements')} type="radio"  name="radioButton" value="value"> Novi zahtjevi </label>
+    <label> <input onclick={refreshTable('showDeal')} type="radio"  name="radioButton" value="value"> Dogovoreni zahtjevi </label>
+    <label> <input onclick={refreshTable('showProcessing')} type="radio"  name="radioButton" value="value"> Zahtjevi u obradi </label>
+    <label> <input onclick={refreshTable('showUserSuggestion')} type="radio"  name="radioButton" value="value"> Zahtjevi koji čekaju odgovor </label>
+    <label> <input onclick={refreshTable('showDone')} type="radio"  name="radioButton" value="value"> Završeni poslovi </label>
+</form>
 </body>
 </form>
 </html>
