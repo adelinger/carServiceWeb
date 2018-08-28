@@ -20,9 +20,6 @@
             firebase.auth().onAuthStateChanged(function (user) {
                 if (user) {
                     window.location.href = 'main.ejs';
-                    var hour = 3600000
-                    req.session.cookie.expires = new Date(Date.now() + hour)
-                    req.session.cookie.maxAge = hour
                 }
                 else {
                     document.body.style.display = 'block'
@@ -60,7 +57,6 @@
                     }).catch(function (error) {
                     console.log(error)
                     falsePasswordMessage.style.display='block';
-
                 })
             }
         </script>

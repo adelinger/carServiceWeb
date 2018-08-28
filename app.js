@@ -13,10 +13,6 @@ var firebaseAdmin = admin.initializeApp({
     databaseURL:'https://carserviceapp-5132f.firebaseio.com'
 });
 
-//create authentication middleware
-function isAuthenticated (req, res, next) {
-
-}
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<link rel='stylesheet' href='/stylesheets/orderView.css' />
+<script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
+
+<body>
+<div class="logOutDiv">
+    <form id="buttonForm" method="post" class="logOutButtonClass">
+        <button onClick={logOut()} > Odjavi se </button>
+    </form>
+</div>
+<div class userView>
+    <div id="userForm" method="post" class="user-Form">
+        <table class="userTable">
+            <th>Podaci</th>
+            <th>Upis korisnika</th>
+            <tr>
+                <td align="left">Ime:</td>
+                <td id = 'ime' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Prezime:</td>
+                <td id ='prezime' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Email:</td>
+                <td id ='email' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Broj telefona:</td>
+                <td id = 'brojTelefona' align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="left">Mjesto:</td>
+                <td  id ='mjesto' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Ulica i broj:</td>
+                <td id = 'ulicaIBroj' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">ID korisnika:</td>
+                <td id = 'IDKorisnika' align="left"></td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+<div class carView>
+    <div id="carForm" method="post" class="car-Form">
+        <table class="carTable">
+            <th>Podaci</th>
+            <th>Upis korisnika</th>
+            <tr>
+                <td align="left">ID vozila</td>
+                <td id = 'IDVozila' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Marka vozila:</td>
+                <td id ='markaVozila' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Model vozila:</td>
+                <td id ='modelVozila' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Tip vozila:</td>
+                <td id = 'tipVozila' align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="left">Godina:</td>
+                <td  id ='godina' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Tip motora:</td>
+                <td id = 'tipMotora' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Snaga motora:</td>
+                <td id = 'snagaMotora' align="left"></td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+<div class orderView>
+    <div id="orderForm" method="post" class="order-Form">
+        <table class="firstTable">
+            <th>Podaci</th>
+            <th>Upis korisnika</th>
+            <tr>
+                <td align="left">ID zahtjeva:</td>
+                <td id = 'IDzahtjeva' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Status:</td>
+                <td id ='statusText' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Kreirano na datum:</td>
+                <td id ='datumKreiranja' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Vrsta usluge:</td>
+                <td id = 'vrstaUsluge' align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="left">Vrsta posla:</td>
+                <td  id ='vrstaPosla' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Opis kvara:</td>
+                <td id = 'opisKvara' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Dijelovi:</td>
+                <td id = 'dijelovi' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Vučna služba:</td>
+                <td id="vucnaSluzba" align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Poželjan datum:</td>
+                <td id="pozeljanDatum" align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Datum servisa:</td>
+                <td id="datumServisa" align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Vrijeme servisa:</td>
+                <td id="vrijemeServisa" align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Cijena popravka:</td>
+                <td id ="cijenaPopravka" align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="left">Napomena servisa:</td>
+                <td id="napomenaServisa" align="left"></td>
+            </tr>
+        </table>
+    </div>
+<div class="userInputPart">
+        <h1>Odgovor</h1>
+        <table>
+            <tr>
+                <td align="left">Datum servisa:</td>
+                <td align="left"><input type="text" name="last" /></td>
+            </tr>
+            <tr>
+                <td align="left">Vrijeme servisa:</td>
+                <td align="left"><input type="text" name="first" /></td>
+            </tr>
+
+            <tr>
+                <td align="left">Cijena popravka:</td>
+                <td align="left"><input type="text" name="email" /></td>
+            </tr>
+
+            <tr>
+                <td align="left">Napomena servisa:</td>
+                <td align="left"><input type="text" name="first" /></td>
+            </tr>
+        </table>
+
+        <button id="sendReplyButton" onclick=""> Pošalji odgovor </button>
+
+    </form>
+</div>
+</div>
+</body>
+
+<script>
+    window.onload = function () {
+        getOrderData();
+        getUserData();
+        getCarData();
+        document.body.style.display = 'block'
+    }
+
+    var config = {
+        apiKey: "AIzaSyD-A5tmlrzK4ZBBYlZgAjMblDYd0IeJGlc",
+        authDomain: "carserviceapp-5132f.firebaseapp.com",
+        databaseURL: "https://carserviceapp-5132f.firebaseio.com",
+        projectId: "carserviceapp-5132f",
+        storageBucket: "carserviceapp-5132f.appspot.com",
+        messagingSenderId: "909560725502"
+    };
+    firebase.initializeApp(config);
+
+var userID  = sessionStorage.getItem('userID');
+var orderID = '"' + sessionStorage.getItem('orderID') + '"';
+var carName = sessionStorage.getItem('carName');
+
+var IDzahtjeva      = document.getElementById('IDzahtjeva');
+var statusText      = document.getElementById('statusText');
+var datumKreiranja  = document.getElementById('datumKreiranja');
+var vrstaUsluge     = document.getElementById('vrstaUsluge');
+var vrstaPosla      = document.getElementById('vrstaPosla');
+var opisKvara       = document.getElementById('opisKvara');
+var dijelovi        = document.getElementById('dijelovi');
+var vucnaSluzba     = document.getElementById('vucnaSluzba');
+var pozeljanDatum   = document.getElementById('pozeljanDatum');
+var vrijemeServisa  = document.getElementById('vrijemeServisa');
+var datumServisa    = document.getElementById('datumServisa');
+var cijenaPopravka  = document.getElementById('cijenaPopravka');
+var napomenaServisa = document.getElementById('napomenaServisa');
+var sendReplyButton = document.getElementById('sendReplyButton');
+
+var ime          = document.getElementById('ime');
+var prezime      = document.getElementById('prezime');
+var email        = document.getElementById('email');
+var brojTelefona = document.getElementById('brojTelefona');
+var mjesto       = document.getElementById('mjesto');
+var ulicaIbroj   = document.getElementById('ulicaIBroj');
+var IDKorisnika  = document.getElementById('IDKorisnika');
+
+var IDVozila    = document.getElementById('IDVozila');
+var markaVozila = document.getElementById('markaVozila');
+var modelvozila = document.getElementById('modelVozila');
+var tipVozila   = document.getElementById('tipVozila');
+var godina      = document.getElementById('godina');
+var tipMotora   = document.getElementById('tipMotora');
+var snagaMotora = document.getElementById('snagaMotora');
+
+function getOrderData() {
+
+    var database = firebase.database();
+    var Ref = firebase.database().ref('order/' +userID+ '/' +orderID +'/');
+    var vucnaSluzbaText;
+    var dijeloviText = "";
+
+    Ref.on('value',function (snapshot) {
+
+        snapshot.forEach(function (childSnapshot) {
+
+            if (childSnapshot.val().vucnaSluzba == true)  vucnaSluzbaText  = "Da";
+            if (childSnapshot.val().vucnaSluzba == false) vucnaSluzbaText  = "Ne";
+            if (childSnapshot.val().dijelovi    == true)  dijeloviText     = "Da";
+            if (childSnapshot.val().dijelovi    == false) dijeloviText     = "Ne";
+
+            if(childSnapshot.val().status == 'Završeno') {
+                sendReplyButton.style.backgroundColor = '#f2f2f2';
+                sendReplyButton.enabled = false;
+                sendReplyButton.style.color='#7f8c8d'};
+            if (childSnapshot.val().status == 'Kreirano')  statusText.style.color = '#f1c40f';
+            if (childSnapshot.val().status == 'Dogovoreno') statusText.style.color = '#01DF01';
+            if (childSnapshot.val().status == 'Završeno')   statusText.style.color = '#A4A4A4';
+            if (childSnapshot.val().status == 'Prijedlog korisnika' ||
+                childSnapshot.val().status == 'Prijedlog servisa') statusText.style.color = '#FF8000';
+            if (childSnapshot.val().status == 'Prijedlog servisa') {  sendReplyButton.enabled = false;
+                sendReplyButton.style.backgroundColor = '#f2f2f2';  sendReplyButton.style.color='#7f8c8d'};
+
+            IDzahtjeva.textContent     = childSnapshot.val().id;
+            statusText.textContent     = childSnapshot.val().status;
+            datumKreiranja.textContent = childSnapshot.val().datumKreiranja;
+            vrstaUsluge.textContent    = childSnapshot.val().vrstaUsluge;
+            vrstaPosla.textContent     = childSnapshot.val().vrstaPosla;
+            opisKvara.textContent      = childSnapshot.val().opisKvara;
+            dijelovi.textContent       = dijeloviText;
+            vucnaSluzba.textContent    = vucnaSluzbaText;
+            pozeljanDatum.textContent  = childSnapshot.val().pozeljniDatum;
+            datumServisa.textContent = childSnapshot.val().datumServisa;
+            vrijemeServisa.textContent = childSnapshot.val().vrijemeServisa;
+            cijenaPopravka.textContent = childSnapshot.val().cijena;
+            napomenaServisa.textContent = childSnapshot.val().napomenaServisera;
+
+        })
+    })
+
+}
+
+function getUserData() {
+    var database = firebase.database();
+    var Ref = firebase.database().ref('users/' +userID+ '/');
+    
+    Ref.on('value', function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+            ime.textContent          = childSnapshot.val().name;
+            prezime.textContent      = childSnapshot.val().lastName;
+            email.textContent        = childSnapshot.val().email;
+            brojTelefona.textContent = childSnapshot.val().phone;
+            mjesto.textContent       = childSnapshot.val().city;
+            ulicaIbroj.textContent   = childSnapshot.val().adress;
+            IDKorisnika.textContent  = childSnapshot.val().uid;
+        })
+    })
+
+}
+function getCarData() {
+    var database = firebase.database();
+    var Ref = firebase.database().ref('car/' +userID+ '/' +carName);
+
+    Ref.on('value', function (snapshot) {
+        IDVozila.textContent    = carName;
+        markaVozila.textContent = snapshot.val().markaVozila;
+        modelvozila.textContent = snapshot.val().modelVozila;
+        tipVozila.textContent   = snapshot.val().tipVozila;
+        godina.textContent      = snapshot.val().godina;
+        tipMotora.textContent   = snapshot.val().godina;
+        snagaMotora.textContent = snapshot.val().snagaMotora;
+    })
+}
+
+</script>
+</html>

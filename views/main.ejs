@@ -22,7 +22,6 @@
     var fragment = document.createDocumentFragment();
     var table = document.createElement("table");
 
-
     window.onload = function () {
         checkIfLoggedIn();
         createTable('showAll', table, fragment);
@@ -54,12 +53,11 @@
         var database = firebase.database();
         var Ref = firebase.database().ref('order/');
 
-
         Ref.on('value', function(snapshot) {                       //get userID from orders
             listOfOrders = snapshot.val();
             table.innerHTML='';
 
-            var headerList = ["IDKorisnika", "ID zahtjeva", "Ime korisnika", "Email", "Status", "Vrijeme"];
+            var headerList = ["IDKorisnika", "ID zahtjeva", "Ime korisnika", "Email", "Auto", "Status", "Vrijeme", ""];
             for (var i=0; i<headerList.length; i++){
                 var th = document.createElement("th");
                 th.textContent = headerList[i];
@@ -104,10 +102,18 @@
                                         if(snapChild.val().status == "Prijedlog korisnika") dot.style.backgroundColor= '#FF8000';
                                         if(snapChild.val().status == "Prijedlog servisa") dot.style.backgroundColor= '#FF8000';
 
-                                        var trValues = [childSnapshot.key, childSnapshotTwo.key.substr(1, 1), userName, userEmail, snapChild.val().status, snapChild.val().datumKreiranja];
+                                        var trValues = [childSnapshot.key, childSnapshotTwo.key.substr(1, 1), userName, userEmail, snapChild.val().carName ,snapChild.val().status, snapChild.val().datumKreiranja];
 
                                         for (var i = 0; i < trValues.length; i++) {
                                             var td = document.createElement("td");
+                                            td.onclick = function() {
+                                                //window.open(this.href, '/userInfo.ejs','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=550,height=450')
+                                                sessionStorage.setItem('userID',trValues[0]);
+                                                sessionStorage.setItem('orderID',trValues[1]);
+                                                sessionStorage.setItem('carName',trValues[4]);
+                                                window.location.href ='/orderView.ejs';
+                                            }
+                                            console.log(filterData)
 
                                             if(filterData == 'showAll'){
                                                 td.textContent = trValues[i];
@@ -117,7 +123,7 @@
                                             }
                                             if(filterData == 'showNewRequirements')
                                             {
-                                                if(trValues[4] != 'Kreirano') return;
+                                                if(trValues[5] != 'Kreirano') return;
                                                 td.textContent = trValues[i];
                                                 tr.appendChild(td)
                                                 tr.appendChild(dot)
@@ -125,7 +131,7 @@
                                             }
                                             if(filterData == 'showDeal')
                                             {
-                                                if(trValues[4] != 'Dogovoreno') return;
+                                                if(trValues[5] != 'Dogovoreno') return;
                                                 td.textContent = trValues[i];
                                                 tr.appendChild(td)
                                                 tr.appendChild(dot)
@@ -133,7 +139,7 @@
                                             }
                                             if(filterData == 'showProcessing')
                                             {
-                                                if(trValues[4] != 'Prijedlog servisa' && trValues[4] != 'Prijedlog korisnika') return;
+                                                if(trValues[5] != 'Prijedlog servisa' && trValues[5] != 'Prijedlog korisnika') return;
                                                 td.textContent = trValues[i];
                                                 tr.appendChild(td)
                                                 tr.appendChild(dot)
@@ -141,7 +147,7 @@
                                             }
                                             if(filterData == 'showUserSuggestion')
                                             {
-                                                if(trValues[4] != 'Prijedlog korisnika' && trValues[4] != 'Kreirano' ) return;
+                                                if(trValues[5] != 'Prijedlog korisnika' && trValues[5] != 'Kreirano' ) return;
                                                 td.textContent = trValues[i];
                                                 tr.appendChild(td)
                                                 tr.appendChild(dot)
@@ -149,7 +155,7 @@
                                             }
                                             if(filterData == 'showDone')
                                             {
-                                                if(trValues[4] != 'Završeno' ) return;
+                                                if(trValues[5] != 'Završeno' ) return;
                                                 td.textContent = trValues[i];
                                                 tr.appendChild(td)
                                                 tr.appendChild(dot)

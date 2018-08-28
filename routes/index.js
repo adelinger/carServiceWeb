@@ -8,20 +8,17 @@ router.get('/', function(req, res, next) {
 router.get('/main.ejs', function(req, res, next) {
     res.render('main.ejs')
 })
-
-/*
-router.get('/homePage',isAuthenticated(),function (req, res) {
-    res.render('homePage.ejs')
+router.get('/orderView.ejs', function(req, res, next) {
+    res.render('orderView.ejs')
 })
-*/
+router.get('/userInfo.ejs', function(req, res, next) {
+    res.render('userInfo.ejs')
+})
 
 router.post('/', function(req, res) {
 
 });
 
-function isAuthenticated (req, res, next) {
-
-}
 
 module.exports = router;
 
