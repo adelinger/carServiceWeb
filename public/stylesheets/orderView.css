@@ -4,36 +4,40 @@ body {
     display: none;
 }
 
-orderView {
-    width: 100px;
-    float: left;
+.order-Form {
+    width:40%;
+    margin-left:auto;
+    margin-right:auto;
 }
 .userInputPart {
     position: relative;
-    top: 30px;
+    top: 40px;
+    width:40%;
+    margin-left:auto;
+    margin-right:auto;
 }
 .userInputPart button
 {
     position: relative;
-    height: 40px;
-    left: 100px;
-    top:20px;
+    left: 50%;
+    top: 10px;
+    margin-bottom: 15px;
     font-family: "Roboto", sans-serif;
     border: 0px;
     background: #c0392b;
     width: fit-content;
-    padding: 10px;
+    padding: 7px;
     color: #FFFFFF;
     font-size: 14px;
     cursor: pointer;
 }
 .userInputPart input {
-    width: 500px;
+    width:680px;
     font-family: arial, sans-serif;
     font-size: large;
 }
 .userInputPart h1{
-    width: 620px;
+    width: 745px;
     text-align: center;
     font-family: arial, sans-serif;
     font-size: medium;
@@ -43,7 +47,7 @@ orderView {
     padding: 2px 6px 2px 6px;
 }
 .firstTable table{
-    float: top;
+    width: 100%;
     font-family: arial, sans-serif;
     font-size: large;
     border-collapse: collapse;
@@ -74,7 +78,7 @@ orderView {
 .logOutButtonClass button {
     float: right;
     position: relative;
-    top: -10px;
+    top: -5px;
     font-family: "Roboto", sans-serif;
     border: 0px;
     background: #c0392b;
@@ -85,13 +89,15 @@ orderView {
     cursor: pointer;
 }
 .user-Form {
-
+    width:40%;
+    margin-left:auto;
+    margin-right:auto;
 }
 .user-Form table
 {
+    width: 100%;
     position: relative;
-    float: right;
-    right: 200px;
+    top: 5px;
     font-family: arial, sans-serif;
     font-size: large;
     border-color: #000000;
@@ -112,12 +118,15 @@ orderView {
 }
 .user-Form tr:nth-child(even){
     background-color:  #f2f2f2;}
+.car-Form {
+    width:40%;
+    margin-left:auto;
+    margin-right:auto;
+}
 .car-Form table
 {
-    left: 440px;
+    width: 100%;
     position: relative;
-    float: right;
-    top: 400px;
     font-family: arial, sans-serif;
     font-size: large;
     border-color: #000000;

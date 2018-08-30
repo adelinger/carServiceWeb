@@ -31,13 +31,15 @@
 
 
     function checkIfLoggedIn(){
+        var type = sessionStorage.getItem('userType');
+        console.log(type);
         firebase.auth().onAuthStateChanged(function (user) {
-            if (user) {
+            if (user && type == 'admin') {
                 document.body.style.display = 'block'
                 currentUserId = user.uid;
             }
             else {
-                window.location.href = '/';
+               logOut();
             }
         })
     }
@@ -69,18 +71,18 @@
 
                 var RefTwo = firebase.database().ref('order/' +childSnapshot.key+ '/');
 
-                RefTwo.on('value', function(snapshotTwo) {       //get number of order from orders
+                RefTwo.once('value', function(snapshotTwo) {       //get number of order from orders
                     listOfOrders = snapshot.val();
                     snapshotTwo.forEach(function (childSnapshotTwo) {
 
                       var  RefNew = firebase.database().ref('order/' +childSnapshot.key + '/' +childSnapshotTwo.key +'/');
-                      RefNew.on('value', function (snap) {
+                      RefNew.once('value', function (snap) {
                           snap.forEach(function (snapChild) {
                              orderStatus = snapChild.val().status; //get status info from orders
                               timeInfo = snapChild.val().datumKreiranja;
 
                                 var RefThree = firebase.database().ref('users/' + childSnapshot.key + '/');  //get user info from users
-                                RefThree.on('value', function (snapshotThree) {
+                                RefThree.once('value', function (snapshotThree) {
                                     snapshotThree.forEach(function (childSnapshotThree) {
                                         userName = childSnapshotThree.val().name + " " + childSnapshotThree.val().lastName;
                                         userEmail = childSnapshotThree.val().email
@@ -113,7 +115,6 @@
                                                 sessionStorage.setItem('carName',trValues[4]);
                                                 window.location.href ='/orderView.ejs';
                                             }
-                                            console.log(filterData)
 
                                             if(filterData == 'showAll'){
                                                 td.textContent = trValues[i];
@@ -191,7 +192,7 @@
     <label id="testID"> <input onclick={refreshTable('showNewRequirements')} type="radio"  name="radioButton" value="value"> Novi zahtjevi </label>
     <label> <input onclick={refreshTable('showDeal')} type="radio"  name="radioButton" value="value"> Dogovoreni zahtjevi </label>
     <label> <input onclick={refreshTable('showProcessing')} type="radio"  name="radioButton" value="value"> Zahtjevi u obradi </label>
-    <label> <input onclick={refreshTable('showUserSuggestion')} type="radio"  name="radioButton" value="value"> Zahtjevi koji čekaju odgovor </label>
+    <label id ="zahtjeviKojiCekajuOdgovor"> <input onclick={refreshTable('showUserSuggestion')} type="radio"  name="radioButton" value="value"> Zahtjevi koji čekaju odgovor </label>
     <label> <input onclick={refreshTable('showDone')} type="radio"  name="radioButton" value="value"> Završeni poslovi </label>
 </form>
 </body>

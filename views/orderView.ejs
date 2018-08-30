@@ -9,85 +9,10 @@
         <button onClick={logOut()} > Odjavi se </button>
     </form>
 </div>
-<div class userView>
-    <div id="userForm" method="post" class="user-Form">
-        <table class="userTable">
-            <th>Podaci</th>
-            <th>Upis korisnika</th>
-            <tr>
-                <td align="left">Ime:</td>
-                <td id = 'ime' align="left"></td>
-            </tr>
-            <tr>
-                <td align="left">Prezime:</td>
-                <td id ='prezime' align="left"></td>
-            </tr>
-            <tr>
-                <td align="left">Email:</td>
-                <td id ='email' align="left"></td>
-            </tr>
-            <tr>
-                <td align="left">Broj telefona:</td>
-                <td id = 'brojTelefona' align="left"></td>
-            </tr>
-
-            <tr>
-                <td align="left">Mjesto:</td>
-                <td  id ='mjesto' align="left"></td>
-            </tr>
-            <tr>
-                <td align="left">Ulica i broj:</td>
-                <td id = 'ulicaIBroj' align="left"></td>
-            </tr>
-            <tr>
-                <td align="left">ID korisnika:</td>
-                <td id = 'IDKorisnika' align="left"></td>
-            </tr>
-
-        </table>
-    </div>
-</div>
-<div class carView>
-    <div id="carForm" method="post" class="car-Form">
-        <table class="carTable">
-            <th>Podaci</th>
-            <th>Upis korisnika</th>
-            <tr>
-                <td align="left">ID vozila</td>
-                <td id = 'IDVozila' align="left"></td>
-            </tr>
-            <tr>
-                <td align="left">Marka vozila:</td>
-                <td id ='markaVozila' align="left"></td>
-            </tr>
-            <tr>
-                <td align="left">Model vozila:</td>
-                <td id ='modelVozila' align="left"></td>
-            </tr>
-            <tr>
-                <td align="left">Tip vozila:</td>
-                <td id = 'tipVozila' align="left"></td>
-            </tr>
-
-            <tr>
-                <td align="left">Godina:</td>
-                <td  id ='godina' align="left"></td>
-            </tr>
-            <tr>
-                <td align="left">Tip motora:</td>
-                <td id = 'tipMotora' align="left"></td>
-            </tr>
-            <tr>
-                <td align="left">Snaga motora:</td>
-                <td id = 'snagaMotora' align="left"></td>
-            </tr>
-
-        </table>
-    </div>
-</div>
 <div class orderView>
     <div id="orderForm" method="post" class="order-Form">
         <table class="firstTable">
+            <h1> Podaci o odabranom zahtjevu</h1>
             <th>Podaci</th>
             <th>Upis korisnika</th>
             <tr>
@@ -146,38 +71,118 @@
             </tr>
         </table>
     </div>
-<div class="userInputPart">
-        <h1>Odgovor</h1>
-        <table>
-            <tr>
-                <td align="left">Datum servisa:</td>
-                <td align="left"><input type="text" name="last" /></td>
-            </tr>
-            <tr>
-                <td align="left">Vrijeme servisa:</td>
-                <td align="left"><input type="text" name="first" /></td>
-            </tr>
-
-            <tr>
-                <td align="left">Cijena popravka:</td>
-                <td align="left"><input type="text" name="email" /></td>
-            </tr>
-
-            <tr>
-                <td align="left">Napomena servisa:</td>
-                <td align="left"><input type="text" name="first" /></td>
-            </tr>
-        </table>
-
-        <button id="sendReplyButton" onclick=""> Pošalji odgovor </button>
-
     </form>
+
 </div>
+<div class userView>
+    <div id="userForm" method="post" class="user-Form">
+        <table class="userTable">
+            <h1> Podaci o korisniku</h1>
+            <th>Podaci</th>
+            <th>Upis korisnika</th>
+            <tr>
+                <td align="left">Ime:</td>
+                <td id = 'ime' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Prezime:</td>
+                <td id ='prezime' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Email:</td>
+                <td id ='email' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Broj telefona:</td>
+                <td id = 'brojTelefona' align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="left">Mjesto:</td>
+                <td  id ='mjesto' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Ulica i broj:</td>
+                <td id = 'ulicaIBroj' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">ID korisnika:</td>
+                <td id = 'IDKorisnika' align="left"></td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+<div class carView>
+    <div id="carForm" method="post" class="car-Form">
+
+        <table class="carTable">
+            <h1>Podaci o vozilu</h1>
+            <th>Podaci</th>
+            <th>Upis korisnika</th>
+            <tr>
+                <td align="left">ID vozila</td>
+                <td id = 'IDVozila' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Marka vozila:</td>
+                <td id ='markaVozila' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Model vozila:</td>
+                <td id ='modelVozila' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Tip vozila:</td>
+                <td id = 'tipVozila' align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="left">Godina:</td>
+                <td  id ='godina' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Tip motora:</td>
+                <td id = 'tipMotora' align="left"></td>
+            </tr>
+            <tr>
+                <td align="left">Snaga motora:</td>
+                <td id = 'snagaMotora' align="left"></td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+<div class="userInputPart">
+    <h1>Odgovor</h1>
+    <table>
+        <tr>
+            <td align="left">Datum servisa:</td>
+            <td  align="left"><input id="date" type="date" format="2014-12-10"  /></td>
+        </tr>
+        <tr>
+            <td align="left">Vrijeme servisa:</td>
+            <td  align="left"><input id="time" type="time"  /></td>
+        </tr>
+
+        <tr>
+            <td align="left">Cijena popravka:</td>
+            <td align="left"><input id="cijenaInput" type="text"  /></td>
+        </tr>
+
+        <tr>
+            <td align="left">Napomena servisa:</td>
+            <td  align="left"><input id="inputNapomena" type="text"  /></td>
+        </tr>
+    </table>
+
+    <button id="sendReplyButton"  enabled="enabled" onclick={sendImportedData()}> Pošalji odgovor </button>
 </div>
 </body>
 
 <script>
     window.onload = function () {
+
         getOrderData();
         getUserData();
         getCarData();
@@ -197,6 +202,7 @@
 var userID  = sessionStorage.getItem('userID');
 var orderID = '"' + sessionStorage.getItem('orderID') + '"';
 var carName = sessionStorage.getItem('carName');
+var orderKey;
 
 var IDzahtjeva      = document.getElementById('IDzahtjeva');
 var statusText      = document.getElementById('statusText');
@@ -229,6 +235,12 @@ var godina      = document.getElementById('godina');
 var tipMotora   = document.getElementById('tipMotora');
 var snagaMotora = document.getElementById('snagaMotora');
 
+var inputDate     = document.getElementById('date');
+var inputTime     = document.getElementById('time');
+var inputCijena   = document.getElementById('cijenaInput');
+var inputNapomena = document.getElementById('inputNapomena');
+
+
 function getOrderData() {
 
     var database = firebase.database();
@@ -239,6 +251,7 @@ function getOrderData() {
     Ref.on('value',function (snapshot) {
 
         snapshot.forEach(function (childSnapshot) {
+            orderKey = childSnapshot.key;
 
             if (childSnapshot.val().vucnaSluzba == true)  vucnaSluzbaText  = "Da";
             if (childSnapshot.val().vucnaSluzba == false) vucnaSluzbaText  = "Ne";
@@ -257,20 +270,19 @@ function getOrderData() {
             if (childSnapshot.val().status == 'Prijedlog servisa') {  sendReplyButton.enabled = false;
                 sendReplyButton.style.backgroundColor = '#f2f2f2';  sendReplyButton.style.color='#7f8c8d'};
 
-            IDzahtjeva.textContent     = childSnapshot.val().id;
-            statusText.textContent     = childSnapshot.val().status;
-            datumKreiranja.textContent = childSnapshot.val().datumKreiranja;
-            vrstaUsluge.textContent    = childSnapshot.val().vrstaUsluge;
-            vrstaPosla.textContent     = childSnapshot.val().vrstaPosla;
-            opisKvara.textContent      = childSnapshot.val().opisKvara;
-            dijelovi.textContent       = dijeloviText;
-            vucnaSluzba.textContent    = vucnaSluzbaText;
-            pozeljanDatum.textContent  = childSnapshot.val().pozeljniDatum;
-            datumServisa.textContent = childSnapshot.val().datumServisa;
-            vrijemeServisa.textContent = childSnapshot.val().vrijemeServisa;
-            cijenaPopravka.textContent = childSnapshot.val().cijena;
+            IDzahtjeva.textContent      = childSnapshot.val().id;
+            statusText.textContent      = childSnapshot.val().status;
+            datumKreiranja.textContent  = childSnapshot.val().datumKreiranja;
+            vrstaUsluge.textContent     = childSnapshot.val().vrstaUsluge;
+            vrstaPosla.textContent      = childSnapshot.val().vrstaPosla;
+            opisKvara.textContent       = childSnapshot.val().opisKvara;
+            dijelovi.textContent        = dijeloviText;
+            vucnaSluzba.textContent     = vucnaSluzbaText;
+            pozeljanDatum.textContent   = childSnapshot.val().pozeljanDatum;
+            datumServisa.textContent    = childSnapshot.val().datumServisa;
+            vrijemeServisa.textContent  = childSnapshot.val().vrijemeServisa;
+            cijenaPopravka.textContent  = childSnapshot.val().cijena;
             napomenaServisa.textContent = childSnapshot.val().napomenaServisera;
-
         })
     })
 
@@ -306,6 +318,44 @@ function getCarData() {
         tipMotora.textContent   = snapshot.val().godina;
         snagaMotora.textContent = snapshot.val().snagaMotora;
     })
+}
+
+function sendImportedData() {
+    var database = firebase.database();
+    var vucnaBool = true;
+    var dijeloviBool = true;
+    console.log(inputCijena.value)
+
+    if (vucnaSluzba.textContent == "Da") vucnaBool = true;
+    if (vucnaSluzba.textContent == "Ne") vucnaBool = false;
+    if (dijelovi.textContent == "Da")dijeloviBool  = true;
+    if (dijelovi.textContent == "Ne")dijeloviBool  = false;
+
+    var order = {
+        carName: IDVozila.textContent,
+        cijena: inputCijena.value,
+        datumKreiranja: datumKreiranja.textContent,
+        datumServisa: inputDate.value,
+        dijelovi: dijeloviBool,
+        id: IDzahtjeva.textContent,
+        napomenaServisera: napomenaServisa.textContent,
+        opisKvara: opisKvara.textContent,
+        pozeljanDatum: pozeljanDatum.textContent,
+        status: 'Prijedlog servisa',
+        uid: IDKorisnika.textContent,
+        vrijemeServisa:inputTime.value,
+        vrstaPosla: vrstaPosla.textContent,
+        vrstaUsluge: vrstaUsluge.textContent,
+        vucnaSluzba: vucnaBool,
+    }
+
+    var newPostKey = firebase.database().ref().child('order/' +userID+ '/' +orderID).push().key;
+
+    var updates = {};
+    updates['order/' +userID+ '/' +orderID + '/' + orderKey] = order;
+
+    var Ref = firebase.database().ref().update(updates)
+    sendReplyButton.style.backgroundColor = '#f2f2f2';  sendReplyButton.style.color='#7f8c8d'
 }
 
 </script>
