@@ -16,6 +16,7 @@
     "firebase-functions": "0.6.3",
     "http-errors": "~1.6.2",
     "morgan": "~1.9.0",
-    "save": "^2.3.2"
+    "save": "^2.3.2",
+    "uniq": "^1.0.1"
   }
 }

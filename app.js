@@ -12,6 +12,11 @@ var firebaseAdmin = admin.initializeApp({
     credential:admin.credential.cert(serviceAccount),
     databaseURL:'https://carserviceapp-5132f.firebaseio.com'
 });
+admin.messaging().sendToDevice(idToken, payload, options).then(function (response) {
+    console.log('worked like a charm');
+}).catch(function (error) {
+    console.log(error)
+})
 
 
 var indexRouter = require('./routes/index');
@@ -50,5 +55,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 module.exports = app;

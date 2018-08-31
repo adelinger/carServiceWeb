@@ -17,6 +17,7 @@
 
         firebase.initializeApp(config);
         function checkIfLoggedIn ()  {
+            document.body.style.display = 'block';
             firebase.auth().onAuthStateChanged(function (user) {
                 var database = firebase.database();
                 var userStatus = "";
