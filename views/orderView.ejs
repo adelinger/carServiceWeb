@@ -186,6 +186,8 @@
         getOrderData();
         getUserData();
         getCarData();
+        getTokenAndOptions();
+        sendNotification();
         document.body.style.display = 'block'
     }
 
@@ -203,6 +205,7 @@ var userID  = sessionStorage.getItem('userID');
 var orderID = '"' + sessionStorage.getItem('orderID') + '"';
 var carName = sessionStorage.getItem('carName');
 var orderKey;
+var idToken;
 
 var IDzahtjeva      = document.getElementById('IDzahtjeva');
 var statusText      = document.getElementById('statusText');
@@ -263,7 +266,7 @@ function getOrderData() {
                 sendReplyButton.enabled = false;
                 sendReplyButton.style.color='#7f8c8d'};
             if (childSnapshot.val().status == 'Kreirano')  statusText.style.color = '#f1c40f';
-            if (childSnapshot.val().status == 'Dogovoreno') statusText.style.color = '#01DF01';
+            if (childSnapshot.val().status == 'Dogovoreno') {statusText.style.color = '#01DF01', sendReplyButton.style.backgroundColor = '#f2f2f2'}
             if (childSnapshot.val().status == 'Završeno')   statusText.style.color = '#A4A4A4';
             if (childSnapshot.val().status == 'Prijedlog korisnika' ||
                 childSnapshot.val().status == 'Prijedlog servisa') statusText.style.color = '#FF8000';
@@ -324,7 +327,6 @@ function sendImportedData() {
     var database = firebase.database();
     var vucnaBool = true;
     var dijeloviBool = true;
-    console.log(inputCijena.value)
 
     if (vucnaSluzba.textContent == "Da") vucnaBool = true;
     if (vucnaSluzba.textContent == "Ne") vucnaBool = false;
@@ -338,7 +340,7 @@ function sendImportedData() {
         datumServisa: inputDate.value,
         dijelovi: dijeloviBool,
         id: IDzahtjeva.textContent,
-        napomenaServisera: napomenaServisa.textContent,
+        napomenaServisera: inputNapomena.value,
         opisKvara: opisKvara.textContent,
         pozeljanDatum: pozeljanDatum.textContent,
         status: 'Prijedlog servisa',
@@ -355,7 +357,39 @@ function sendImportedData() {
     updates['order/' +userID+ '/' +orderID + '/' + orderKey] = order;
 
     var Ref = firebase.database().ref().update(updates)
+
+    sendNotification();
+
     sendReplyButton.style.backgroundColor = '#f2f2f2';  sendReplyButton.style.color='#7f8c8d'
+}
+function getTokenAndOptions() {
+    var database = firebase.database();
+    var Ref = firebase.database().ref('/tokens' + '/' +userID+ '/');
+    Ref.on('value', function (snapshot) {
+        idToken = snapshot.val()
+    })
+
+    var payload = {
+        notification: {
+            title: "Obavijest o narudžbi",
+            body: "Prominijenjen je status narudžbe broj" + orderID + "vozila" + carName
+        }
+    }
+    var options = {
+        priority:"high"
+    }
+
+}
+
+
+function sendNotification () {
+
+   /*admin.messaging().sendToDevice(idToken, payload, options).then(function (response) {
+        console.log('worked like a charm');
+    }).catch(function (error) {
+        console.log(error)
+    })
+*/
 }
 
 </script>
