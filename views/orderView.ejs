@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
-<link rel='stylesheet' href='/stylesheets/orderView.css' />
-<script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
-
+<head>
+    <link rel='stylesheet' href='/stylesheets/orderView.css' />
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
+   <sccipt src="/carServiceWeb/app.js"></sccipt>
+</head>
 <body>
 <div class="logOutDiv">
     <form id="buttonForm" method="post" class="logOutButtonClass">
@@ -187,7 +189,6 @@
         getUserData();
         getCarData();
         getTokenAndOptions();
-        sendNotification();
         document.body.style.display = 'block'
     }
 
@@ -201,186 +202,189 @@
     };
     firebase.initializeApp(config);
 
-var userID  = sessionStorage.getItem('userID');
-var orderID = '"' + sessionStorage.getItem('orderID') + '"';
-var carName = sessionStorage.getItem('carName');
-var orderKey;
-var idToken;
+    var userID  = sessionStorage.getItem('userID');
+    var orderID = '"' + sessionStorage.getItem('orderID') + '"';
+    var carName = sessionStorage.getItem('carName');
+    var orderKey;
+    var idToken;
 
-var IDzahtjeva      = document.getElementById('IDzahtjeva');
-var statusText      = document.getElementById('statusText');
-var datumKreiranja  = document.getElementById('datumKreiranja');
-var vrstaUsluge     = document.getElementById('vrstaUsluge');
-var vrstaPosla      = document.getElementById('vrstaPosla');
-var opisKvara       = document.getElementById('opisKvara');
-var dijelovi        = document.getElementById('dijelovi');
-var vucnaSluzba     = document.getElementById('vucnaSluzba');
-var pozeljanDatum   = document.getElementById('pozeljanDatum');
-var vrijemeServisa  = document.getElementById('vrijemeServisa');
-var datumServisa    = document.getElementById('datumServisa');
-var cijenaPopravka  = document.getElementById('cijenaPopravka');
-var napomenaServisa = document.getElementById('napomenaServisa');
-var sendReplyButton = document.getElementById('sendReplyButton');
+    var IDzahtjeva      = document.getElementById('IDzahtjeva');
+    var statusText      = document.getElementById('statusText');
+    var datumKreiranja  = document.getElementById('datumKreiranja');
+    var vrstaUsluge     = document.getElementById('vrstaUsluge');
+    var vrstaPosla      = document.getElementById('vrstaPosla');
+    var opisKvara       = document.getElementById('opisKvara');
+    var dijelovi        = document.getElementById('dijelovi');
+    var vucnaSluzba     = document.getElementById('vucnaSluzba');
+    var pozeljanDatum   = document.getElementById('pozeljanDatum');
+    var vrijemeServisa  = document.getElementById('vrijemeServisa');
+    var datumServisa    = document.getElementById('datumServisa');
+    var cijenaPopravka  = document.getElementById('cijenaPopravka');
+    var napomenaServisa = document.getElementById('napomenaServisa');
+    var sendReplyButton = document.getElementById('sendReplyButton');
 
-var ime          = document.getElementById('ime');
-var prezime      = document.getElementById('prezime');
-var email        = document.getElementById('email');
-var brojTelefona = document.getElementById('brojTelefona');
-var mjesto       = document.getElementById('mjesto');
-var ulicaIbroj   = document.getElementById('ulicaIBroj');
-var IDKorisnika  = document.getElementById('IDKorisnika');
+    var ime          = document.getElementById('ime');
+    var prezime      = document.getElementById('prezime');
+    var email        = document.getElementById('email');
+    var brojTelefona = document.getElementById('brojTelefona');
+    var mjesto       = document.getElementById('mjesto');
+    var ulicaIbroj   = document.getElementById('ulicaIBroj');
+    var IDKorisnika  = document.getElementById('IDKorisnika');
 
-var IDVozila    = document.getElementById('IDVozila');
-var markaVozila = document.getElementById('markaVozila');
-var modelvozila = document.getElementById('modelVozila');
-var tipVozila   = document.getElementById('tipVozila');
-var godina      = document.getElementById('godina');
-var tipMotora   = document.getElementById('tipMotora');
-var snagaMotora = document.getElementById('snagaMotora');
+    var IDVozila    = document.getElementById('IDVozila');
+    var markaVozila = document.getElementById('markaVozila');
+    var modelvozila = document.getElementById('modelVozila');
+    var tipVozila   = document.getElementById('tipVozila');
+    var godina      = document.getElementById('godina');
+    var tipMotora   = document.getElementById('tipMotora');
+    var snagaMotora = document.getElementById('snagaMotora');
 
-var inputDate     = document.getElementById('date');
-var inputTime     = document.getElementById('time');
-var inputCijena   = document.getElementById('cijenaInput');
-var inputNapomena = document.getElementById('inputNapomena');
+    var inputDate     = document.getElementById('date');
+    var inputTime     = document.getElementById('time');
+    var inputCijena   = document.getElementById('cijenaInput');
+    var inputNapomena = document.getElementById('inputNapomena');
 
 
-function getOrderData() {
+    function getOrderData() {
 
-    var database = firebase.database();
-    var Ref = firebase.database().ref('order/' +userID+ '/' +orderID +'/');
-    var vucnaSluzbaText;
-    var dijeloviText = "";
+        var database = firebase.database();
+        var Ref = firebase.database().ref('order/' +userID+ '/' +orderID +'/');
+        var vucnaSluzbaText;
+        var dijeloviText = "";
 
-    Ref.on('value',function (snapshot) {
+        Ref.on('value',function (snapshot) {
 
-        snapshot.forEach(function (childSnapshot) {
-            orderKey = childSnapshot.key;
+            snapshot.forEach(function (childSnapshot) {
+                orderKey = childSnapshot.key;
 
-            if (childSnapshot.val().vucnaSluzba == true)  vucnaSluzbaText  = "Da";
-            if (childSnapshot.val().vucnaSluzba == false) vucnaSluzbaText  = "Ne";
-            if (childSnapshot.val().dijelovi    == true)  dijeloviText     = "Da";
-            if (childSnapshot.val().dijelovi    == false) dijeloviText     = "Ne";
+                if (childSnapshot.val().vucnaSluzba == true)  vucnaSluzbaText  = "Da";
+                if (childSnapshot.val().vucnaSluzba == false) vucnaSluzbaText  = "Ne";
+                if (childSnapshot.val().dijelovi    == true)  dijeloviText     = "Da";
+                if (childSnapshot.val().dijelovi    == false) dijeloviText     = "Ne";
 
-            if(childSnapshot.val().status == 'Završeno') {
-                sendReplyButton.style.backgroundColor = '#f2f2f2';
-                sendReplyButton.enabled = false;
-                sendReplyButton.style.color='#7f8c8d'};
-            if (childSnapshot.val().status == 'Kreirano')  statusText.style.color = '#f1c40f';
-            if (childSnapshot.val().status == 'Dogovoreno') {statusText.style.color = '#01DF01', sendReplyButton.style.backgroundColor = '#f2f2f2'}
-            if (childSnapshot.val().status == 'Završeno')   statusText.style.color = '#A4A4A4';
-            if (childSnapshot.val().status == 'Prijedlog korisnika' ||
-                childSnapshot.val().status == 'Prijedlog servisa') statusText.style.color = '#FF8000';
-            if (childSnapshot.val().status == 'Prijedlog servisa') {  sendReplyButton.enabled = false;
-                sendReplyButton.style.backgroundColor = '#f2f2f2';  sendReplyButton.style.color='#7f8c8d'};
+                if(childSnapshot.val().status == 'Završeno') {
+                    sendReplyButton.style.backgroundColor = '#f2f2f2';
+                    sendReplyButton.enabled = false;
+                    sendReplyButton.style.color='#7f8c8d'};
+                if (childSnapshot.val().status == 'Kreirano')  statusText.style.color = '#f1c40f';
+                if (childSnapshot.val().status == 'Dogovoreno') {statusText.style.color = '#01DF01', sendReplyButton.style.backgroundColor = '#f2f2f2'}
+                if (childSnapshot.val().status == 'Završeno')   statusText.style.color = '#A4A4A4';
+                if (childSnapshot.val().status == 'Prijedlog korisnika' ||
+                    childSnapshot.val().status == 'Prijedlog servisa') statusText.style.color = '#FF8000';
+                if (childSnapshot.val().status == 'Prijedlog servisa') {  sendReplyButton.enabled = false;
+                    sendReplyButton.style.backgroundColor = '#f2f2f2';  sendReplyButton.style.color='#7f8c8d'};
 
-            IDzahtjeva.textContent      = childSnapshot.val().id;
-            statusText.textContent      = childSnapshot.val().status;
-            datumKreiranja.textContent  = childSnapshot.val().datumKreiranja;
-            vrstaUsluge.textContent     = childSnapshot.val().vrstaUsluge;
-            vrstaPosla.textContent      = childSnapshot.val().vrstaPosla;
-            opisKvara.textContent       = childSnapshot.val().opisKvara;
-            dijelovi.textContent        = dijeloviText;
-            vucnaSluzba.textContent     = vucnaSluzbaText;
-            pozeljanDatum.textContent   = childSnapshot.val().pozeljanDatum;
-            datumServisa.textContent    = childSnapshot.val().datumServisa;
-            vrijemeServisa.textContent  = childSnapshot.val().vrijemeServisa;
-            cijenaPopravka.textContent  = childSnapshot.val().cijena;
-            napomenaServisa.textContent = childSnapshot.val().napomenaServisera;
+                IDzahtjeva.textContent      = childSnapshot.val().id;
+                statusText.textContent      = childSnapshot.val().status;
+                datumKreiranja.textContent  = childSnapshot.val().datumKreiranja;
+                vrstaUsluge.textContent     = childSnapshot.val().vrstaUsluge;
+                vrstaPosla.textContent      = childSnapshot.val().vrstaPosla;
+                opisKvara.textContent       = childSnapshot.val().opisKvara;
+                dijelovi.textContent        = dijeloviText;
+                vucnaSluzba.textContent     = vucnaSluzbaText;
+                pozeljanDatum.textContent   = childSnapshot.val().pozeljanDatum;
+                datumServisa.textContent    = childSnapshot.val().datumServisa;
+                vrijemeServisa.textContent  = childSnapshot.val().vrijemeServisa;
+                cijenaPopravka.textContent  = childSnapshot.val().cijena;
+                napomenaServisa.textContent = childSnapshot.val().napomenaServisera;
+            })
         })
-    })
 
-}
-
-function getUserData() {
-    var database = firebase.database();
-    var Ref = firebase.database().ref('users/' +userID+ '/');
-    
-    Ref.on('value', function (snapshot) {
-        snapshot.forEach(function (childSnapshot) {
-            ime.textContent          = childSnapshot.val().name;
-            prezime.textContent      = childSnapshot.val().lastName;
-            email.textContent        = childSnapshot.val().email;
-            brojTelefona.textContent = childSnapshot.val().phone;
-            mjesto.textContent       = childSnapshot.val().city;
-            ulicaIbroj.textContent   = childSnapshot.val().adress;
-            IDKorisnika.textContent  = childSnapshot.val().uid;
-        })
-    })
-
-}
-function getCarData() {
-    var database = firebase.database();
-    var Ref = firebase.database().ref('car/' +userID+ '/' +carName);
-
-    Ref.on('value', function (snapshot) {
-        IDVozila.textContent    = carName;
-        markaVozila.textContent = snapshot.val().markaVozila;
-        modelvozila.textContent = snapshot.val().modelVozila;
-        tipVozila.textContent   = snapshot.val().tipVozila;
-        godina.textContent      = snapshot.val().godina;
-        tipMotora.textContent   = snapshot.val().godina;
-        snagaMotora.textContent = snapshot.val().snagaMotora;
-    })
-}
-
-function sendImportedData() {
-    var database = firebase.database();
-    var vucnaBool = true;
-    var dijeloviBool = true;
-
-    if (vucnaSluzba.textContent == "Da") vucnaBool = true;
-    if (vucnaSluzba.textContent == "Ne") vucnaBool = false;
-    if (dijelovi.textContent == "Da")dijeloviBool  = true;
-    if (dijelovi.textContent == "Ne")dijeloviBool  = false;
-
-    var order = {
-        carName: IDVozila.textContent,
-        cijena: inputCijena.value,
-        datumKreiranja: datumKreiranja.textContent,
-        datumServisa: inputDate.value,
-        dijelovi: dijeloviBool,
-        id: IDzahtjeva.textContent,
-        napomenaServisera: inputNapomena.value,
-        opisKvara: opisKvara.textContent,
-        pozeljanDatum: pozeljanDatum.textContent,
-        status: 'Prijedlog servisa',
-        uid: IDKorisnika.textContent,
-        vrijemeServisa:inputTime.value,
-        vrstaPosla: vrstaPosla.textContent,
-        vrstaUsluge: vrstaUsluge.textContent,
-        vucnaSluzba: vucnaBool,
     }
 
-    var newPostKey = firebase.database().ref().child('order/' +userID+ '/' +orderID).push().key;
+    function getUserData() {
+        var database = firebase.database();
+        var Ref = firebase.database().ref('users/' +userID+ '/');
 
-    var updates = {};
-    updates['order/' +userID+ '/' +orderID + '/' + orderKey] = order;
+        Ref.on('value', function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                ime.textContent          = childSnapshot.val().name;
+                prezime.textContent      = childSnapshot.val().lastName;
+                email.textContent        = childSnapshot.val().email;
+                brojTelefona.textContent = childSnapshot.val().phone;
+                mjesto.textContent       = childSnapshot.val().city;
+                ulicaIbroj.textContent   = childSnapshot.val().adress;
+                IDKorisnika.textContent  = childSnapshot.val().uid;
+            })
+        })
 
-    var Ref = firebase.database().ref().update(updates)
+    }
+    function getCarData() {
+        var database = firebase.database();
+        var Ref = firebase.database().ref('car/' +userID+ '/' +carName);
 
-    sendNotification();
+        Ref.on('value', function (snapshot) {
+            IDVozila.textContent    = carName;
+            markaVozila.textContent = snapshot.val().markaVozila;
+            modelvozila.textContent = snapshot.val().modelVozila;
+            tipVozila.textContent   = snapshot.val().tipVozila;
+            godina.textContent      = snapshot.val().godina;
+            tipMotora.textContent   = snapshot.val().godina;
+            snagaMotora.textContent = snapshot.val().snagaMotora;
+        })
+    }
 
-    sendReplyButton.style.backgroundColor = '#f2f2f2';  sendReplyButton.style.color='#7f8c8d'
-}
-function getTokenAndOptions() {
-    var database = firebase.database();
-    var Ref = firebase.database().ref('/tokens' + '/' +userID+ '/');
-    Ref.on('value', function (snapshot) {
-        idToken = snapshot.val()
-    })
+    function sendImportedData() {
+        var database = firebase.database();
+        var vucnaBool = true;
+        var dijeloviBool = true;
 
-    var payload = {
-        notification: {
-            title: "Obavijest o narudžbi",
-            body: "Prominijenjen je status narudžbe broj" + orderID + "vozila" + carName
+        if (vucnaSluzba.textContent == "Da") vucnaBool = true;
+        if (vucnaSluzba.textContent == "Ne") vucnaBool = false;
+        if (dijelovi.textContent == "Da")dijeloviBool  = true;
+        if (dijelovi.textContent == "Ne")dijeloviBool  = false;
+
+        var order = {
+            carName: IDVozila.textContent,
+            cijena: inputCijena.value,
+            datumKreiranja: datumKreiranja.textContent,
+            datumServisa: inputDate.value,
+            dijelovi: dijeloviBool,
+            id: IDzahtjeva.textContent,
+            napomenaServisera: inputNapomena.value,
+            opisKvara: opisKvara.textContent,
+            pozeljanDatum: pozeljanDatum.textContent,
+            status: 'Prijedlog servisa',
+            uid: IDKorisnika.textContent,
+            vrijemeServisa:inputTime.value,
+            vrstaPosla: vrstaPosla.textContent,
+            vrstaUsluge: vrstaUsluge.textContent,
+            vucnaSluzba: vucnaBool,
         }
-    }
-    var options = {
-        priority:"high"
-    }
 
-}
-    
+        var newPostKey = firebase.database().ref().child('order/' +userID+ '/' +orderID).push().key;
+
+        var updates = {};
+        updates['order/' +userID+ '/' +orderID + '/' + orderKey] = order;
+
+        var Ref = firebase.database().ref().update(updates)
+
+        getTokenAndOptions();
+        sendNotification(idToken);
+
+        sendReplyButton.style.backgroundColor = '#f2f2f2';  sendReplyButton.style.color='#7f8c8d'
+    }
+    function getTokenAndOptions() {
+        var database = firebase.database();
+        var Ref = firebase.database().ref('/tokens' + '/' +userID+ '/');
+        Ref.on('value', function (snapshot) {
+            idToken = snapshot.val()
+        })
+    }
+    function sendNotification(idToken) {
+
+        var payload = {
+            notification: {
+                title: "Obavijest o narudžbi",
+                body: "Prominijenjen je status narudžbe broj" + orderID + "vozila" + carName
+            }
+        }
+        var options = {
+            priority:"high"
+        }
+
+        start(idToken, payload, options); // uzima idToken, payload, options i salje u app.js
+    }
 
 </script>
 </html>

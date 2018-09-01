@@ -32,7 +32,6 @@
 
     function checkIfLoggedIn(){
         var type = sessionStorage.getItem('userType');
-        console.log(type);
         firebase.auth().onAuthStateChanged(function (user) {
             if (user && type == 'admin') {
                 document.body.style.display = 'block'
