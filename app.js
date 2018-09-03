@@ -12,11 +12,34 @@ var firebaseAdmin = admin.initializeApp({
     credential:admin.credential.cert(serviceAccount),
     databaseURL:'https://carserviceapp-5132f.firebaseio.com'
 });
-admin.messaging().sendToDevice(idToken, payload, options).then(function (response) {
-    console.log('worked like a charm');
-}).catch(function (error) {
-    console.log(error)
-})
+
+var http = require("http");
+var url = require("url");
+
+http.createServer(function(request, response){
+    response.writeHead(200, {"Content-Type":"text/plain"});
+    var params = url.parse(request.url,true).query;
+
+
+   var payload = {
+        notification: {
+            title: "Obavijest o narudžbi",
+            body: "Promijenjen je status zahtjeva broj" + ''+params.number2+''
+        }
+    }
+    var  options = {
+        priority:"high"
+    }
+
+    admin.messaging().sendToDevice(''+ params.number1 + '', payload, options).then(function (response) {
+
+    }).catch(function (error) {
+        console.log(error)
+    })
+
+    response.end();
+}).listen(10001);
+
 
 
 var indexRouter = require('./routes/index');
@@ -39,7 +62,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
