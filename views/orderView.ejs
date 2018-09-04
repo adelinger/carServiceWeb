@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Pregled zahtjeva</title>
     <link rel='stylesheet' href='/stylesheets/orderView.css' />
     <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
-   <sccipt src="/carServiceWeb/app.js"></sccipt>
 </head>
 <body>
+<form id="backButtonForm" method="post" class="backButtonClass">
+    <button id="backButton" onClick={goToMainPage()} > Početna stranica </button>
+</form>
 <div class="logOutDiv">
     <form id="buttonForm" method="post" class="logOutButtonClass">
         <button onClick={logOut()} > Odjavi se </button>
@@ -15,6 +18,10 @@
     <div id="orderForm" method="post" class="order-Form">
         <table class="firstTable">
             <h1> Podaci o odabranom zahtjevu</h1>
+            <div id="agreedButtonForm" method = "post" class="agreed-Form" >
+                <button id="markAsAgreedButton"  onclick={markAsAgreed()}> Označi kao dogovoreno </button>
+            </div>
+            <button id="finishOrderButton"  onclick={markAsFinished()}> Označi kao završeno </button>
             <th>Podaci</th>
             <th>Upis korisnika</th>
             <tr>
@@ -164,7 +171,7 @@
         </tr>
         <tr>
             <td align="left">Vrijeme servisa:</td>
-            <td  align="left"><input id="time" type="time"  /></td>
+            <td  align="left"><input id="time" type="time" /></td>
         </tr>
 
         <tr>
@@ -178,17 +185,15 @@
         </tr>
     </table>
 
-    <button id="sendReplyButton"  enabled="enabled" onclick={sendImportedData()}> Pošalji odgovor </button>
+    <button id="sendReplyButton"  onclick={sendImportedData(status)}> Pošalji odgovor </button>
 </div>
 </body>
 
 <script>
     window.onload = function () {
-
         getOrderData();
         getUserData();
         getCarData();
-        getTokenAndOptions();
         document.body.style.display = 'block'
     }
 
@@ -205,6 +210,7 @@
     var userID  = sessionStorage.getItem('userID');
     var orderID = '"' + sessionStorage.getItem('orderID') + '"';
     var carName = sessionStorage.getItem('carName');
+    var status = 'Prijedlog servisa'
     var orderKey;
     var idToken;
 
@@ -244,6 +250,11 @@
     var inputCijena   = document.getElementById('cijenaInput');
     var inputNapomena = document.getElementById('inputNapomena');
 
+    function logOut() {
+        firebase.auth().signOut().then(function () {
+            window.location.href = '/';
+        })
+    }
 
     function getOrderData() {
 
@@ -263,16 +274,17 @@
                 if (childSnapshot.val().dijelovi    == false) dijeloviText     = "Ne";
 
                 if(childSnapshot.val().status == 'Završeno') {
+                    sendReplyButton.style.display='block'
                     sendReplyButton.style.backgroundColor = '#f2f2f2';
                     sendReplyButton.enabled = false;
                     sendReplyButton.style.color='#7f8c8d'};
                 if (childSnapshot.val().status == 'Kreirano')  statusText.style.color = '#f1c40f';
-                if (childSnapshot.val().status == 'Dogovoreno') {statusText.style.color = '#01DF01', sendReplyButton.style.backgroundColor = '#f2f2f2'}
+                if (childSnapshot.val().status == 'Dogovoreno') {statusText.style.color = '#01DF01'; sendReplyButton.style.display = 'none'}
                 if (childSnapshot.val().status == 'Završeno')   statusText.style.color = '#A4A4A4';
+                if (childSnapshot.val().status == 'Prijedlog korisnika') {sendReplyButton.style.display='block'}
                 if (childSnapshot.val().status == 'Prijedlog korisnika' ||
                     childSnapshot.val().status == 'Prijedlog servisa') statusText.style.color = '#FF8000';
-                if (childSnapshot.val().status == 'Prijedlog servisa') {  sendReplyButton.enabled = false;
-                    sendReplyButton.style.backgroundColor = '#f2f2f2';  sendReplyButton.style.color='#7f8c8d'};
+                if (childSnapshot.val().status == 'Prijedlog servisa') {  sendReplyButton.enabled = false; sendReplyButton.style.display='none' };
 
                 IDzahtjeva.textContent      = childSnapshot.val().id;
                 statusText.textContent      = childSnapshot.val().status;
@@ -282,7 +294,7 @@
                 opisKvara.textContent       = childSnapshot.val().opisKvara;
                 dijelovi.textContent        = dijeloviText;
                 vucnaSluzba.textContent     = vucnaSluzbaText;
-                pozeljanDatum.textContent   = childSnapshot.val().pozeljanDatum;
+                pozeljanDatum.textContent   = childSnapshot.val().pozeljniDatum;
                 datumServisa.textContent    = childSnapshot.val().datumServisa;
                 vrijemeServisa.textContent  = childSnapshot.val().vrijemeServisa;
                 cijenaPopravka.textContent  = childSnapshot.val().cijena;
@@ -324,7 +336,7 @@
         })
     }
 
-    function sendImportedData() {
+    function sendImportedData(status) {
         var database = firebase.database();
         var vucnaBool = true;
         var dijeloviBool = true;
@@ -334,56 +346,98 @@
         if (dijelovi.textContent == "Da")dijeloviBool  = true;
         if (dijelovi.textContent == "Ne")dijeloviBool  = false;
 
-        var order = {
-            carName: IDVozila.textContent,
-            cijena: inputCijena.value,
-            datumKreiranja: datumKreiranja.textContent,
-            datumServisa: inputDate.value,
-            dijelovi: dijeloviBool,
-            id: IDzahtjeva.textContent,
-            napomenaServisera: inputNapomena.value,
-            opisKvara: opisKvara.textContent,
-            pozeljanDatum: pozeljanDatum.textContent,
-            status: 'Prijedlog servisa',
-            uid: IDKorisnika.textContent,
-            vrijemeServisa:inputTime.value,
-            vrstaPosla: vrstaPosla.textContent,
-            vrstaUsluge: vrstaUsluge.textContent,
-            vucnaSluzba: vucnaBool,
+        if(status == 'Dogovoreno')
+        {
+            var order = {
+                carName: IDVozila.textContent,
+                cijena: cijenaPopravka.textContent,
+                datumKreiranja: datumKreiranja.textContent,
+                datumServisa: datumServisa.textContent,
+                dijelovi: dijeloviBool,
+                id: IDzahtjeva.textContent,
+                napomenaServisera: napomenaServisa.textContent,
+                opisKvara: opisKvara.textContent,
+                pozeljniDatum: pozeljanDatum.textContent,
+                status: status,
+                uid: IDKorisnika.textContent,
+                vrijemeServisa: vrijemeServisa.textContent,
+                vrstaPosla: vrstaPosla.textContent,
+                vrstaUsluge: vrstaUsluge.textContent,
+                vucnaSluzba: vucnaBool,
+            }
+
+            var updates = {};
+            updates['order/' +userID+ '/' +orderID + '/' + orderKey] = order;
+
+            var Ref = firebase.database().ref().update(updates)
+        }
+        if(status != "Dogovoreno")
+        {
+            var order = {
+                carName: IDVozila.textContent,
+                cijena: inputCijena.value,
+                datumKreiranja: datumKreiranja.textContent,
+                datumServisa: inputDate.value,
+                dijelovi: dijeloviBool,
+                id: IDzahtjeva.textContent,
+                napomenaServisera: inputNapomena.value,
+                opisKvara: opisKvara.textContent,
+                pozeljniDatum: pozeljanDatum.textContent,
+                status: status,
+                uid: IDKorisnika.textContent,
+                vrijemeServisa:inputTime.value,
+                vrstaPosla: vrstaPosla.textContent,
+                vrstaUsluge: vrstaUsluge.textContent,
+                vucnaSluzba: vucnaBool,
+            }
+
+
+            var updates = {};
+            updates['order/' +userID+ '/' +orderID + '/' + orderKey] = order;
+
+            var Ref = firebase.database().ref().update(updates)
         }
 
-        var newPostKey = firebase.database().ref().child('order/' +userID+ '/' +orderID).push().key;
-
-        var updates = {};
-        updates['order/' +userID+ '/' +orderID + '/' + orderKey] = order;
-
-        var Ref = firebase.database().ref().update(updates)
-
         getTokenAndOptions();
-        sendNotification(idToken);
-
-        sendReplyButton.style.backgroundColor = '#f2f2f2';  sendReplyButton.style.color='#7f8c8d'
     }
     function getTokenAndOptions() {
         var database = firebase.database();
         var Ref = firebase.database().ref('/tokens' + '/' +userID+ '/');
         Ref.on('value', function (snapshot) {
-            idToken = snapshot.val()
+            idToken = snapshot.val();
+           sendNotification(idToken, orderID, carName);
         })
+
     }
-    function sendNotification(idToken) {
+function sendNotification (idToken, orderID, carName) {
 
-        var payload = {
-            notification: {
-                title: "Obavijest o narudžbi",
-                body: "Prominijenjen je status narudžbe broj" + orderID + "vozila" + carName
-            }
-        }
-        var options = {
-            priority:"high"
-        }
+      var test = idToken;
+      var OID = orderID
 
-        start(idToken, payload, options); // uzima idToken, payload, options i salje u app.js
+    try {
+        var myWindow = window.open("http://localhost:10001" + "?number1=" + test + "&number2="+OID, 'targetWindow', "width=250px, height=250px")
+        myWindow.close();
+        alert('Uspješno poslano!');
+    }
+    catch (e) {
+    }
+    }
+
+    function markAsFinished () {
+        if(statusText.textContent == 'Završeno') {alert('Ovaj zahtjev je već završen'); return;}
+        if (confirm("Jeste li sigurni")) {
+            sendImportedData('Završeno');
+        }
+    }
+    function goToMainPage() {
+        window.location.href = "/main.ejs"
+    }
+    function markAsAgreed () {
+        if(statusText.textContent == 'Dogovoreno') {alert('Ovaj zahtjev je već označen kao dogovoreno'); return;}
+        if(statusText.textContent == 'Završeno') {alert('Ovaj zahtjev je završen'); return;}
+        if (confirm("Jeste li sigurni")) {
+            sendImportedData('Dogovoreno');
+        }
     }
 
 </script>

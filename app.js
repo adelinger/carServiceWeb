@@ -32,11 +32,10 @@ http.createServer(function(request, response){
     }
 
     admin.messaging().sendToDevice(''+ params.number1 + '', payload, options).then(function (response) {
-
     }).catch(function (error) {
         console.log(error)
     })
-
+    response.write('Poslano!')
     response.end();
 }).listen(10001);
 

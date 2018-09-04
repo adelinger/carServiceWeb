@@ -11,12 +11,15 @@ router.get('/main.ejs', function(req, res, next) {
 router.get('/orderView.ejs', function(req, res, next) {
     res.render('orderView.ejs')
 })
-router.get('/userInfo.ejs', function(req, res, next) {
-    res.render('userInfo.ejs')
+router.get('/work.ejs', function(req, res, next) {
+    res.render('work.ejs')
 })
 
 router.post('/', function(req, res) {
 
+});
+router.post('/orderView.ejs', function(req, res) {
+res.render('main.ejs')
 });
 
 

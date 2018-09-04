@@ -17,11 +17,11 @@
 
         firebase.initializeApp(config);
         function checkIfLoggedIn ()  {
-            document.body.style.display = 'block';
             firebase.auth().onAuthStateChanged(function (user) {
+                document.body.style.display = 'block';
                 var database = firebase.database();
                 var userStatus = "";
-                if (!user) {document.body.style.display = 'block';  sessionStorage.setItem('userType', userStatus)}
+                if (!user) {document.body.style.display = 'block';  sessionStorage.setItem('userType', userStatus); return;}
                 var Ref = firebase.database().ref('users/' + user.uid+ '/'+ 'typeNode/' + '/');
                 Ref.on('value', function (snapshot) {
                     userStatus = snapshot.val().type;
@@ -65,10 +65,10 @@
                             var database = firebase.database();
                             var Ref = firebase.database().ref('users/' + data.user.uid+ '/'+ 'typeNode/' + '/');
                             Ref.on('value', function (snapshot) {
-                                if (snapshot.val().type == "admin") {window.location.href= "main.ejs";  sessionStorage.setItem('userType', snapshot.val().type == "admin")}
+                                if (snapshot.val().type == "admin") {window.location.href= '78main.ejs';  sessionStorage.setItem('userType', snapshot.val().type == "admin")}
                             }).catch(function (error) {
                                 firebase.auth().signOut();
-                                falsePasswordMessage.style.display='block';
+                               falsePasswordMessage.style.display='block';
                             })
 
                     }).catch(function (error) {
