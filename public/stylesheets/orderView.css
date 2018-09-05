@@ -3,6 +3,60 @@
 body {
     display: none;
 }
+.backButtonClass button {
+    float: left;
+    position: relative;
+    top: -5px;
+    font-family: "Roboto", sans-serif;
+    border: 0px;
+    background: #c0392b;
+    width: fit-content;
+    padding: 10px;
+    color: #FFFFFF;
+    font-size: 14px;
+    cursor: pointer;
+}
+.backButtonClass button:hover,.form button:active,.form button:focus {
+    background: #e74c3c;
+}
+.order-Form button:hover,.form button:active,.form button:focus {
+     background: #e74c3c;
+ }
+.logOutButtonClass button:hover,.form button:active,.form button:focus {
+    background: #e74c3c;
+}
+.userInputPart button:hover,.form button:active,.form button:focus {
+    background: #e74c3c;
+}
+
+.agreed-Form button {
+
+    top: 10px;
+    margin-bottom: 15px;
+    font-family: "Roboto", sans-serif;
+    border: 0px;
+    background: #c0392b;
+    width: fit-content;
+    padding: 7px;
+    color: #FFFFFF;
+    font-size: 14px;
+    cursor: pointer;
+}
+.order-Form button
+{
+    position: relative;
+    left: 73.5%;
+    top: 10px;
+    margin-bottom: 15px;
+    font-family: "Roboto", sans-serif;
+    border: 0px;
+    background: #c0392b;
+    width: 180px;
+    padding: 7px;
+    color: #FFFFFF;
+    font-size: 14px;
+    cursor: pointer;
+}
 
 .order-Form {
     width:40%;
@@ -82,7 +136,7 @@ body {
     font-family: "Roboto", sans-serif;
     border: 0px;
     background: #c0392b;
-    width: fit-content;
+    width: 110px;
     padding: 10px;
     color: #FFFFFF;
     font-size: 14px;
