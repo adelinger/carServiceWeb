@@ -398,24 +398,24 @@
             var Ref = firebase.database().ref().update(updates)
         }
 
-        getTokenAndOptions();
+        getToken();
     }
-    function getTokenAndOptions() {
+    function getToken() {
         var database = firebase.database();
         var Ref = firebase.database().ref('/tokens' + '/' +userID+ '/');
         Ref.on('value', function (snapshot) {
             idToken = snapshot.val();
-           sendNotification(idToken, orderID, carName);
+           sendNotification(idToken, orderID);
         })
 
     }
-function sendNotification (idToken, orderID, carName) {
+function sendNotification (idToken, orderID) {
 
-      var test = idToken;
+      var token = idToken;
       var OID = orderID
 
     try {
-        var myWindow = window.open("http://localhost:10001" + "?number1=" + test + "&number2="+OID, 'targetWindow', "width=250px, height=250px")
+        var myWindow = window.open("http://localhost:10001" + "?number1=" + token + "&number2="+OID, 'targetWindow', "width=1px, height=1px")
         myWindow.close();
         alert('Uspješno poslano!');
     }

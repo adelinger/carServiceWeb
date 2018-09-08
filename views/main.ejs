@@ -51,11 +51,11 @@
     }
 
     function createTable (filterData, table, fragment) {
-
         var database = firebase.database();
         var Ref = firebase.database().ref('order/');
 
         Ref.on('value', function(snapshot) {                       //get userID from orders
+            table.innerHTML='';
             listOfOrders = snapshot.val();
             table.innerHTML='';
 
