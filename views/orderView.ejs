@@ -22,6 +22,10 @@
                 <button id="markAsAgreedButton"  onclick={markAsAgreed()}> Označi kao dogovoreno </button>
             </div>
             <button id="finishOrderButton"  onclick={markAsFinished()}> Označi kao završeno </button>
+            <div id="agreedButtonForm" method = "post" class="agreed-Form" >
+                <button id="deleteOrderButton"  onclick={deleteOrder()}> Obriši zahtjev </button>
+            </div>
+
             <th>Podaci</th>
             <th>Upis korisnika</th>
             <tr>
@@ -437,6 +441,14 @@ function sendNotification (idToken, orderID) {
         if(statusText.textContent == 'Završeno') {alert('Ovaj zahtjev je završen'); return;}
         if (confirm("Jeste li sigurni")) {
             sendImportedData('Dogovoreno');
+        }
+    }
+    function deleteOrder() {
+        var database = firebase.database();
+        var Ref = firebase.database().ref('order/' +userID+ '/' +orderID +'/');
+        if (confirm("Jeste li sigurni")) {
+            Ref.remove();
+            window.location.href = "/main.ejs"
         }
     }
 
