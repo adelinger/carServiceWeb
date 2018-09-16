@@ -31,7 +31,6 @@
                         window.location.href= "main.ejs"
                     }
                 })
-
             })
         }
 
@@ -58,6 +57,7 @@
                 firebase.auth().signInWithEmailAndPassword(email, password)
                     .then(function (data) {
                         var notAdmin = "";
+                        var user = firebase.auth().currentUser
                         idToken = data.user.uid;
                         localStorage.setItem('id', idToken);
                         sessionStorage.setItem('userType', notAdmin)
@@ -65,7 +65,7 @@
                             var database = firebase.database();
                             var Ref = firebase.database().ref('users/' + data.user.uid+ '/'+ 'typeNode/' + '/');
                             Ref.on('value', function (snapshot) {
-                                if (snapshot.val().type == "admin") {window.location.href= '78main.ejs';  sessionStorage.setItem('userType', snapshot.val().type == "admin")}
+                                if (snapshot.val().type == "admin" && user != null) { falsePasswordMessage.style.display='none'; window.location.href= '78main.ejs';  sessionStorage.setItem('userType', snapshot.val().type == "admin")}
                             }).catch(function (error) {
                                 firebase.auth().signOut();
                                falsePasswordMessage.style.display='block';
@@ -73,7 +73,11 @@
 
                     }).catch(function (error) {
                     console.log(error)
-                    falsePasswordMessage.style.display='block';
+                    var user = firebase.auth().currentUser
+                    if (user == null)
+                    {
+                        falsePasswordMessage.style.display='block';
+                    }
                 })
             }
         </script>
