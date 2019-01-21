@@ -10,5 +10,5 @@ password: 123456
 
 ![ScreenShot](http://prntscr.com/m9zzbj)
 ![ScreenShot](http://prntscr.com/m9zzkh)
-![ScreenShot](https://drive.google.com/open?id=146YVEiz3P7K3s9ESNmEnq6EEqVPvYqE7)
+![ScreenShot](https://prnt.sc/m9zzbj)
 ![ScreenShot](https://drive.google.com/open?id=1BSMMKnYRmuEBDiTXTdrXpXzxJVMl4cmP)
